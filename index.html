@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/konva@4.1.6/konva.min.js"></script>
+    <meta charset="utf-8" />
+    <title>Konva Simple Drag Bounds Demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+        // get drag bound function
+        // console.log(position, 'asas')
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: 380,
+        height: 280
+      });
+
+      var layer = new Konva.Layer();
+
+      var rectHeight = '280px';
+      var rectWidth = '380px';
+      var rectY = (stage.height() - rectHeight) / 2;
+
+      Konva.Image.fromURL('https://image.shutterstock.com/z/stock-photo-bright-spring-view-of-the-cameo-island-picturesque-morning-scene-on-the-port-sostis-zakinthos-1048185397.jpg', function(darthNode) {
+        darthNode.setAttrs({
+          x: 0,
+          y: 0,
+          scaleX: 0.5,
+          scaleY: 0.5,
+          draggable: true,  
+        dragBoundFunc: function(pos) {
+            console.log(pos.x <= -190)
+            if(pos.x >= 0 || pos.x <= -190){
+                return {
+                    x: this.absolutePosition().x,
+                    y: this.absolutePosition().y
+                };
+            }
+          return {
+            x: pos.x,
+            y: this.absolutePosition().y
+          };
+        }
+        });
+        layer.add(darthNode);
+        layer.batchDraw();
+      });
+      
+      // add the layer to the stage
+      stage.add(layer);
+    </script>
+  </body>
+</html>
